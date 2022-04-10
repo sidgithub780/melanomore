@@ -5,6 +5,8 @@ import { OpenImages } from '../functions/OpenImages';
 
 import Screen from '../components/Screen';
 
+import { setAsyncStorage } from '../functions/AsyncFunctions';
+
 const Scanscreen = ({ navigation }) => {
   return (
     <Screen>
@@ -32,10 +34,13 @@ const Scanscreen = ({ navigation }) => {
           style={[styles.bigButton, styles.shadowProp]}
           onPress={async () => {
             const imageURI = await OpenImages();
-            console.log(imageURI);
 
             if (imageURI !== null) {
-              navigation.navigate('Specific Results', { imageURI: imageURI });
+              const theKey = await setAsyncStorage(imageURI);
+              navigation.navigate('Specific Results', {
+                diagnosis: 'melanoma',
+                theKey: theKey,
+              });
             }
           }}
         >

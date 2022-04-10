@@ -2,22 +2,19 @@ import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Screen from '../components/Screen';
 import { Ionicons } from '@expo/vector-icons';
+import SmallButton from '../components/SmallButton';
 
 const SpecificResultScreen = ({ route, navigation }) => {
   return (
     <Screen>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
+        <SmallButton
+          icon='arrow-back'
+          text='Back'
           onPress={() => {
             navigation.goBack();
           }}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <Ionicons name='arrow-back' size={35} style={styles.arrowStyle} />
-            <Text style={styles.buttonText}>Back</Text>
-          </View>
-        </TouchableOpacity>
+        />
         <Text
           style={{
             fontFamily: 'CourierPrime-Regular',
@@ -35,7 +32,7 @@ const SpecificResultScreen = ({ route, navigation }) => {
         </Text>
       </View>
       <Text style={{ fontFamily: 'CourierPrime-Regular' }}>
-        {route.params.diagnosis}
+        {route.params.theKey}
       </Text>
     </Screen>
   );

@@ -1,10 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
 
 import Screen from '../components/Screen';
 import PastResult from '../components/PastResult';
 
+import SmallButton from '../components/SmallButton';
+
+import { getAllKeyValuePairsAsyncStorage } from '../functions/AsyncFunctions';
+
+const handleSubmit = async () => {
+  let onlyImages = [];
+  let result = await getAllKeyValuePairsAsyncStorage();
+  result.forEach((element) => onlyImages.push(element[1]));
+  console.log(onlyImages);
+  return onlyImages;
+};
+
 const Resultscreen = ({ navigation }) => {
+  const [scans, setScans] = useState(null);
+
   return (
     <Screen>
       <Text
@@ -21,6 +35,21 @@ const Resultscreen = ({ navigation }) => {
       >
         Past Results
       </Text>
+      <SmallButton
+        icon='refresh-outline'
+        text='Load'
+        onPress={async () => {
+          const result = await handleSubmit();
+          setScans(result);
+        }}
+      />
+      <PastResult
+        diagnosis='melanoma'
+        onPress={() => {
+          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
+        }}
+      />
+
       <PastResult
         diagnosis='melanoma'
         onPress={() => {
@@ -28,19 +57,9 @@ const Resultscreen = ({ navigation }) => {
         }}
       />
       <PastResult
-        diagnosis='not melanoma'
+        diagnosis='melanoma'
         onPress={() => {
-          navigation.navigate('Specific Results', {
-            diagnosis: 'not melanoma',
-          });
-        }}
-      />
-      <PastResult
-        diagnosis='melanoma again'
-        onPress={() => {
-          navigation.navigate('Specific Results', {
-            diagnosis: 'melanoma again',
-          });
+          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
         }}
       />
     </Screen>
