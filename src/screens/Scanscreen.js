@@ -34,7 +34,7 @@ const Scanscreen = ({ navigation }) => {
             const imageURI = await OpenImages();
             console.log(imageURI);
 
-            if (imageURI !== undefined) {
+            if (imageURI !== null) {
               navigation.navigate('Specific Results', { imageURI: imageURI });
             }
           }}

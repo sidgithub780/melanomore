@@ -29,6 +29,23 @@ const Scan = () => {
   );
 };
 
+const Result = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='ShowResult'
+        component={Resultscreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='Specific Results'
+        component={SpecificResultScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -63,7 +80,7 @@ const TabNavigator = () => {
 
       <Tab.Screen name='Scan' component={Scan} />
 
-      <Tab.Screen name='Result' component={Resultscreen} />
+      <Tab.Screen name='Result' component={Result} />
       <Tab.Screen name='About' component={Aboutscreen} />
     </Tab.Navigator>
   );

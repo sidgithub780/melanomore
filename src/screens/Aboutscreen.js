@@ -21,7 +21,7 @@ const Aboutscreen = () => {
         About Us
       </Text>
       <Text style={{ fontFamily: 'CourierPrime-Regular', fontSize: 16 }}>
-        Built by ...
+        Built by Siddhanth Kumar and Shivane Dadi
       </Text>
     </Screen>
   );

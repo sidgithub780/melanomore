@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 import Screen from '../components/Screen';
+import PastResult from '../components/PastResult';
 
-const Resultscreen = () => {
+const Resultscreen = ({ navigation }) => {
   return (
     <Screen>
       <Text
@@ -20,6 +21,28 @@ const Resultscreen = () => {
       >
         Past Results
       </Text>
+      <PastResult
+        diagnosis='melanoma'
+        onPress={() => {
+          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
+        }}
+      />
+      <PastResult
+        diagnosis='not melanoma'
+        onPress={() => {
+          navigation.navigate('Specific Results', {
+            diagnosis: 'not melanoma',
+          });
+        }}
+      />
+      <PastResult
+        diagnosis='melanoma again'
+        onPress={() => {
+          navigation.navigate('Specific Results', {
+            diagnosis: 'melanoma again',
+          });
+        }}
+      />
     </Screen>
   );
 };
