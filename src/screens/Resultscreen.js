@@ -8,6 +8,8 @@ import SmallButton from '../components/SmallButton';
 
 import { getAllKeyValuePairsAsyncStorage } from '../functions/AsyncFunctions';
 
+import uuid from 'react-native-uuid';
+
 const handleSubmit = async () => {
   let onlyImages = [];
   let result = await getAllKeyValuePairsAsyncStorage();
@@ -51,27 +53,27 @@ const Resultscreen = ({ navigation }) => {
           setScans(result);
         }}
       />
-      <View style={{ flex: 1 }}>
-        <ScrollView style={{ paddingHorizontal: 10, flex: 1 }}>
-          {scans !== null ? (
-            scans.map((imageURI) => (
-              <PastResult
-                diagnosis='melanoma'
-                imageURI={imageURI}
-                onPress={() => {
-                  navigation.navigate('Specific Results', {
-                    imageURI: imageURI,
-                  });
-                }}
-              />
-            ))
-          ) : (
-            <Text fontFamily='CourierPrime-Regular'>
-              There are currently no scans.
-            </Text>
-          )}
-        </ScrollView>
-      </View>
+
+      <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
+        {scans !== null ? (
+          scans.map((imageURI) => (
+            <PastResult
+              diagnosis='melanoma'
+              imageURI={imageURI}
+              onPress={() => {
+                navigation.navigate('Specific Results', {
+                  imageURI: imageURI,
+                });
+              }}
+              key={uuid.v4()}
+            />
+          ))
+        ) : (
+          <Text fontFamily='CourierPrime-Regular'>
+            There are currently no scans.
+          </Text>
+        )}
+      </ScrollView>
     </Screen>
   );
 };
