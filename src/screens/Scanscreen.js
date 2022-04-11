@@ -36,10 +36,9 @@ const Scanscreen = ({ navigation }) => {
             const imageURI = await OpenImages();
 
             if (imageURI !== null) {
-              const theKey = await setAsyncStorage(imageURI);
+              const theValue = await setAsyncStorage(imageURI);
               navigation.navigate('Specific Results', {
-                diagnosis: 'melanoma',
-                theKey: theKey,
+                imageURI: theValue,
               });
             }
           }}

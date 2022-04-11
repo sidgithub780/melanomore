@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
+import Btn from '../components/Btn';
+import { clearAsyncStorage } from '../functions/AsyncFunctions';
+
 import Screen from '../components/Screen';
+import { Ionicons } from '@expo/vector-icons';
 
 const Aboutscreen = () => {
   return (
@@ -21,8 +25,17 @@ const Aboutscreen = () => {
         About Us
       </Text>
       <Text style={{ fontFamily: 'CourierPrime-Regular', fontSize: 16 }}>
-        Built by Siddhanth Kumar and Shivane Dadi
+        Built by ...
       </Text>
+      <Btn
+        icon={<Ionicons name='trash-outline' size={40} />}
+        text='Delete all scans.'
+        desc='Clear storage permanently.'
+        onPress={async () => {
+          await clearAsyncStorage();
+          alert('All storage cleared!');
+        }}
+      />
     </Screen>
   );
 };

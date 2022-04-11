@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 import React from 'react';
 import Screen from '../components/Screen';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,9 +31,10 @@ const SpecificResultScreen = ({ route, navigation }) => {
           Specific Results
         </Text>
       </View>
-      <Text style={{ fontFamily: 'CourierPrime-Regular' }}>
-        {route.params.theKey}
-      </Text>
+      <Image
+        source={{ uri: route.params.imageURI }}
+        style={{ width: 50, height: 50 }}
+      />
     </Screen>
   );
 };

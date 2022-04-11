@@ -1,10 +1,17 @@
-import { StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import React from 'react';
 
-const PastResult = ({ diagnosis, onPress }) => {
+const PastResult = ({ diagnosis, onPress, imageURI }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text>{diagnosis}</Text>
+      <Image source={{ uri: imageURI }} style={{ width: 50, height: 50 }} />
     </TouchableOpacity>
   );
 };

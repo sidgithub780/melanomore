@@ -1,5 +1,7 @@
-import { StyleSheet, Text } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+
+import uuid from 'react-native-uuid';
 
 import Screen from '../components/Screen';
 import PastResult from '../components/PastResult';
@@ -13,11 +15,19 @@ const handleSubmit = async () => {
   let result = await getAllKeyValuePairsAsyncStorage();
   result.forEach((element) => onlyImages.push(element[1]));
   console.log(onlyImages);
+  if (onlyImages.length === 0) {
+    alert('No scans currently stored.');
+  }
   return onlyImages;
 };
 
 const Resultscreen = ({ navigation }) => {
   const [scans, setScans] = useState(null);
+
+  useEffect(async () => {
+    const result = await handleSubmit();
+    setScans(result);
+  }, []);
 
   return (
     <Screen>
@@ -43,25 +53,25 @@ const Resultscreen = ({ navigation }) => {
           setScans(result);
         }}
       />
-      <PastResult
-        diagnosis='melanoma'
-        onPress={() => {
-          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
-        }}
-      />
-
-      <PastResult
-        diagnosis='melanoma'
-        onPress={() => {
-          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
-        }}
-      />
-      <PastResult
-        diagnosis='melanoma'
-        onPress={() => {
-          navigation.navigate('Specific Results', { diagnosis: 'melanoma' });
-        }}
-      />
+      <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
+        {scans !== null ? (
+          scans.map((imageURI) => (
+            <PastResult
+              diagnosis='melanoma'
+              imageURI={imageURI}
+              onPress={() => {
+                navigation.navigate('Specific Results', {
+                  imageURI: imageURI,
+                });
+              }}
+            />
+          ))
+        ) : (
+          <Text fontFamily='CourierPrime-Regular'>
+            There are currently no scans.
+          </Text>
+        )}
+      </ScrollView>
     </Screen>
   );
 };

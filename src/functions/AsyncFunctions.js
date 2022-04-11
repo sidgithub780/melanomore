@@ -5,7 +5,7 @@ const setAsyncStorage = async (value) => {
   let theKey = uuid.v4();
   try {
     await AsyncStorage.setItem(theKey, value);
-    return theKey;
+    return value;
   } catch (e) {
     console.log(e);
   }
@@ -48,9 +48,18 @@ const getAllKeyValuePairsAsyncStorage = async () => {
   return values;
 };
 
+const clearAsyncStorage = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export {
   setAsyncStorage,
   getAsyncStorage,
   deleteAsyncStorage,
   getAllKeyValuePairsAsyncStorage,
+  clearAsyncStorage,
 };
