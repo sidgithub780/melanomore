@@ -1,7 +1,5 @@
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-
-import uuid from 'react-native-uuid';
 
 import Screen from '../components/Screen';
 import PastResult from '../components/PastResult';
@@ -53,25 +51,27 @@ const Resultscreen = ({ navigation }) => {
           setScans(result);
         }}
       />
-      <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-        {scans !== null ? (
-          scans.map((imageURI) => (
-            <PastResult
-              diagnosis='melanoma'
-              imageURI={imageURI}
-              onPress={() => {
-                navigation.navigate('Specific Results', {
-                  imageURI: imageURI,
-                });
-              }}
-            />
-          ))
-        ) : (
-          <Text fontFamily='CourierPrime-Regular'>
-            There are currently no scans.
-          </Text>
-        )}
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ paddingHorizontal: 10, flex: 1 }}>
+          {scans !== null ? (
+            scans.map((imageURI) => (
+              <PastResult
+                diagnosis='melanoma'
+                imageURI={imageURI}
+                onPress={() => {
+                  navigation.navigate('Specific Results', {
+                    imageURI: imageURI,
+                  });
+                }}
+              />
+            ))
+          ) : (
+            <Text fontFamily='CourierPrime-Regular'>
+              There are currently no scans.
+            </Text>
+          )}
+        </ScrollView>
+      </View>
     </Screen>
   );
 };
