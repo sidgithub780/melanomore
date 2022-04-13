@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ScrollView, View } from 'react-native';
+import { StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
 import Screen from '../components/Screen';
@@ -23,10 +23,12 @@ const handleSubmit = async () => {
 
 const Resultscreen = ({ navigation }) => {
   const [scans, setScans] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
     const result = await handleSubmit();
     setScans(result);
+    setLoading(false);
   }, []);
 
   return (
@@ -49,31 +51,37 @@ const Resultscreen = ({ navigation }) => {
         icon='refresh-outline'
         text='Load'
         onPress={async () => {
+          setLoading(true);
           const result = await handleSubmit();
-          setScans(result);
+          await setScans(result);
+          setLoading(false);
         }}
       />
 
-      <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-        {scans !== null ? (
-          scans.map((imageURI) => (
-            <PastResult
-              diagnosis='melanoma'
-              imageURI={imageURI}
-              onPress={() => {
-                navigation.navigate('Specific Results', {
-                  imageURI: imageURI,
-                });
-              }}
-              key={uuid.v4()}
-            />
-          ))
-        ) : (
-          <Text fontFamily='CourierPrime-Regular'>
-            There are currently no scans.
-          </Text>
-        )}
-      </ScrollView>
+      {loading != false ? (
+        <ActivityIndicator size='large' />
+      ) : (
+        <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
+          {scans !== null ? (
+            scans.map((imageURI) => (
+              <PastResult
+                diagnosis='melanoma'
+                imageURI={imageURI}
+                onPress={() => {
+                  navigation.navigate('Specific Results', {
+                    imageURI: imageURI,
+                  });
+                }}
+                key={uuid.v4()}
+              />
+            ))
+          ) : (
+            <Text fontFamily='CourierPrime-Regular'>
+              There are currently no scans.
+            </Text>
+          )}
+        </ScrollView>
+      )}
     </Screen>
   );
 };
