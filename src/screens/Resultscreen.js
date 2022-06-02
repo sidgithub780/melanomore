@@ -1,4 +1,10 @@
-import { StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  View,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 
 import Screen from '../components/Screen';
@@ -70,6 +76,7 @@ const Resultscreen = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate('Specific Results', {
                     imageURI: imageURI,
+                    mlflag: false,
                   });
                 }}
                 key={uuid.v4()}

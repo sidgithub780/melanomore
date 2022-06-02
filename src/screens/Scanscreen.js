@@ -1,5 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React from 'react';
+
+import { getPredictions } from '../functions/ML';
+
 import { Ionicons } from '@expo/vector-icons';
 import { OpenImages } from '../functions/OpenImages';
 
@@ -36,10 +39,13 @@ const Scanscreen = ({ navigation }) => {
             const imageURI = await OpenImages();
 
             if (imageURI !== null) {
-              const theValue = await setAsyncStorage(imageURI);
-              navigation.navigate('Specific Results', {
-                imageURI: theValue,
-              });
+              const pred = await getPredictions(imageURI);
+              alert(pred);
+              //const theValue = await setAsyncStorage(imageURI);
+              //navigation.navigate('Specific Results', {
+              //imageURI: theValue,
+              //mlflag: true,
+              //});
             }
           }}
         >

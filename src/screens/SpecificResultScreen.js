@@ -1,12 +1,17 @@
 import { StyleSheet, Text, Image, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Screen from '../components/Screen';
 import { Ionicons } from '@expo/vector-icons';
 import SmallButton from '../components/SmallButton';
+import Btn from '../components/Btn';
 
-const SpecificResultScreen = ({ route, navigation }) => {
+const SpecificResultScreen = ({ route, navigation, mlflag }) => {
+  const [isLoading, setIsLoading] = useState(route.params.mlflag);
+
   return (
     <Screen>
+      {isLoading ? <Text>ml is true</Text> : <Text>ml is false</Text>}
+
       <View style={styles.header}>
         <SmallButton
           icon='arrow-back'
@@ -34,6 +39,13 @@ const SpecificResultScreen = ({ route, navigation }) => {
       <Image
         source={{ uri: route.params.imageURI }}
         style={{ width: 50, height: 50 }}
+      />
+      <Btn
+        text='wow'
+        desc='wow'
+        onPress={() => {
+          alert('wow');
+        }}
       />
     </Screen>
   );
