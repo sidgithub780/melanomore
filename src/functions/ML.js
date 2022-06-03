@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
+import * as FileSystem from 'expo-file-system';
 
 const loadModel = async () => {
   const modelJSON = require('../assets/models/model.json');
@@ -9,6 +10,7 @@ const loadModel = async () => {
     .catch((e) => {
       console.log('Error', e);
     });
+  alert('First part works');
 
   return model;
 };
@@ -24,11 +26,11 @@ const transformImageToTensor = async (uri) => {
   let imgTensor = decodeJpeg(raw);
   const scalar = tf.scalar(255);
   //resize the image
-  //imgTensor = tf.image.resizeNearestNeighbor(imgTensor, [300, 300]);
+  imgTensor = tf.image.resizeNearestNeighbor(imgTensor, [300, 300]);
   //normalize; if a normalization layer is in the model, this step can be skipped
   const tensorScaled = imgTensor.div(scalar);
   //final shape of the rensor
-  const img = tf.reshape(tensorScaled, [1, 300, 300, 3]);
+  const img = tf.reshape(tensorScaled, [-1, 50, 50, 1]);
   return img;
 };
 

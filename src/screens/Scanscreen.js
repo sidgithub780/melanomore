@@ -1,5 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
+import React, { useState } from 'react';
 
 import { getPredictions } from '../functions/ML';
 
@@ -11,6 +17,7 @@ import Screen from '../components/Screen';
 import { setAsyncStorage } from '../functions/AsyncFunctions';
 
 const Scanscreen = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   return (
     <Screen>
       <Text
@@ -39,19 +46,26 @@ const Scanscreen = ({ navigation }) => {
             const imageURI = await OpenImages();
 
             if (imageURI !== null) {
-              const pred = await getPredictions(imageURI);
-              alert(pred);
-              //const theValue = await setAsyncStorage(imageURI);
-              //navigation.navigate('Specific Results', {
-              //imageURI: theValue,
-              //mlflag: true,
-              //});
+              try {
+                setLoading(true);
+                const pred = await getPredictions(imageURI);
+                setLoading(false);
+                const theValue = await setAsyncStorage(imageURI);
+                navigation.navigate('Specific Results', {
+                  imageURI: theValue,
+                  mlflag: true,
+                  pred: pred,
+                });
+              } catch (e) {
+                console.log(e);
+              }
             }
           }}
         >
           <Ionicons name='camera' size={165} style={{ alignSelf: 'center' }} />
           <Text style={styles.buttonText}>Detect</Text>
         </TouchableOpacity>
+        {loading ? <ActivityIndicator size='large' /> : null}
       </View>
     </Screen>
   );
