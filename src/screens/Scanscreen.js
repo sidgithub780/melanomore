@@ -5,9 +5,9 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { getPredictions } from '../functions/ML';
+import { getPredictions, setup } from '../functions/ML';
 
 import { Ionicons } from '@expo/vector-icons';
 import { OpenImages } from '../functions/OpenImages';
@@ -18,6 +18,11 @@ import { setAsyncStorage } from '../functions/AsyncFunctions';
 
 const Scanscreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setup();
+  });
+
   return (
     <Screen>
       <Text
@@ -49,6 +54,7 @@ const Scanscreen = ({ navigation }) => {
               try {
                 setLoading(true);
                 const pred = await getPredictions(imageURI);
+                alert('occurred');
                 setLoading(false);
                 const theValue = await setAsyncStorage(imageURI);
                 navigation.navigate('Specific Results', {

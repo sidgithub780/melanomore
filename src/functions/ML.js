@@ -1,6 +1,8 @@
 import * as tf from '@tensorflow/tfjs';
+import { setWasmPath } from '@tensorflow/tfjs-backend-wasm';
 import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import * as FileSystem from 'expo-file-system';
+//import wasmPATH from '../../node_modules/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm';
 
 const loadModel = async () => {
   const modelJSON = require('../assets/models/model.json');
@@ -10,7 +12,6 @@ const loadModel = async () => {
     .catch((e) => {
       console.log('Error', e);
     });
-  alert('First part works');
 
   return model;
 };
@@ -37,19 +38,25 @@ const transformImageToTensor = async (uri) => {
 const makePredictions = async (batch, model, imagesTensor) => {
   //.ts: const makePredictions = async (batch:number, model:tf.LayersModel,imagesTensor:tf.Tensor<tf.Rank>):Promise<tf.Tensor<tf.Rank>[]>=>{
   //cast output prediction to tensor
-  const predictionsdata = model.predict(imagesTensor);
+  const predictionsdata = await model.predict(imagesTensor);
   //.ts: const predictionsdata:tf.Tensor = model.predict(imagesTensor) as tf.Tensor
   let pred = predictionsdata.split(batch); //split by batch size
   //return predictions
   return pred;
 };
 
+//https://blog.tensorflow.org/2020/03/introducing-webassembly-backend-for-tensorflow-js.html
 const getPredictions = async (image) => {
-  await tf.ready();
-  const model = await loadModel();
   const tensor_image = await transformImageToTensor(image);
   const predictions = await makePredictions(1, model, tensor_image);
   return predictions;
 };
 
-export { getPredictions };
+const setup = async () => {
+  setWasmPath('../assets/tfjs-backend-wasm.wasm');
+  await tf.setBackend('wasm');
+  await tf.ready();
+  const model = loadModel();
+};
+
+export { getPredictions, setup };

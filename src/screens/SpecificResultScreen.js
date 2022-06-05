@@ -10,7 +10,7 @@ const SpecificResultScreen = ({ route, navigation }) => {
 
   return (
     <Screen>
-      {isLoading ? <Text>ml is true</Text> : <Text>ml is false</Text>}
+      {route.params.pred ? <Text>true</Text> : <Text>false</Text>}
 
       <View style={styles.header}>
         <SmallButton
