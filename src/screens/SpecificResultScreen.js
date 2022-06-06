@@ -1,17 +1,26 @@
-import { StyleSheet, Text, Image, View } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, Image, View, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Screen from '../components/Screen';
 import { Ionicons } from '@expo/vector-icons';
 import SmallButton from '../components/SmallButton';
 import Btn from '../components/Btn';
+import { process } from '../functions/tf';
+import { diag } from '@tensorflow/tfjs';
 
-const SpecificResultScreen = ({ route, navigation, mlflag }) => {
-  const [isLoading, setIsLoading] = useState(route.params.mlflag);
+const SpecificResultScreen = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(route.params.mlflag);
+  const [diagnosis, setDiagnosis] = useState(null);
+
+  useEffect(() => {
+    if (route.params.mlflag) {
+      console.log('useeffect is running');
+      console.log(typeof route.params.imageURI);
+      process(route.params.imageURI, setDiagnosis, setLoading);
+    }
+  }, []);
 
   return (
     <Screen>
-      {route.params.pred ? <Text>true</Text> : <Text>false</Text>}
-
       <View style={styles.header}>
         <SmallButton
           icon='arrow-back'
@@ -40,6 +49,8 @@ const SpecificResultScreen = ({ route, navigation, mlflag }) => {
         source={{ uri: route.params.imageURI }}
         style={{ width: 50, height: 50 }}
       />
+      {loading ? <ActivityIndicator size='large' /> : <Text>{diagnosis}</Text>}
+
       <Btn
         text='wow'
         desc='wow'

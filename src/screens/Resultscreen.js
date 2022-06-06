@@ -20,7 +20,6 @@ const handleSubmit = async () => {
   let onlyImages = [];
   let result = await getAllKeyValuePairsAsyncStorage();
   result.forEach((element) => onlyImages.push(element[1]));
-  console.log(onlyImages);
   if (onlyImages.length === 0) {
     alert('No scans currently stored.');
   }

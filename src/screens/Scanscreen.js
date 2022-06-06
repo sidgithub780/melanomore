@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   StyleSheet,
   Text,
@@ -7,12 +6,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-=======
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
->>>>>>> parent of 5ed5393 (commit)
-
-import { getPredictions, setup } from '../functions/ML';
 
 import { Ionicons } from '@expo/vector-icons';
 import { OpenImages } from '../functions/OpenImages';
@@ -22,15 +15,8 @@ import Screen from '../components/Screen';
 import { setAsyncStorage } from '../functions/AsyncFunctions';
 
 const Scanscreen = ({ navigation }) => {
-<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setup();
-  });
-
-=======
->>>>>>> parent of 5ed5393 (commit)
   return (
     <Screen>
       <Text
@@ -59,30 +45,15 @@ const Scanscreen = ({ navigation }) => {
             const imageURI = await OpenImages();
 
             if (imageURI !== null) {
-<<<<<<< HEAD
               try {
-                setLoading(true);
-                const pred = await getPredictions(imageURI);
-                alert('occurred');
-                setLoading(false);
                 const theValue = await setAsyncStorage(imageURI);
                 navigation.navigate('Specific Results', {
                   imageURI: theValue,
                   mlflag: true,
-                  pred: pred,
                 });
               } catch (e) {
                 console.log(e);
               }
-=======
-              const pred = await getPredictions(imageURI);
-              alert(pred);
-              //const theValue = await setAsyncStorage(imageURI);
-              //navigation.navigate('Specific Results', {
-              //imageURI: theValue,
-              //mlflag: true,
-              //});
->>>>>>> parent of 5ed5393 (commit)
             }
           }}
         >
