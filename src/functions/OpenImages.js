@@ -6,7 +6,7 @@ const OpenImages = async () => {
     mediaTypes: ImagePicker.MediaTypeOptions.All,
     allowsEditing: true,
     aspect: [4, 3],
-    quality: 0,
+    quality: 1,
   });
 
   if (result.cancelled) {

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import SmallButton from '../components/SmallButton';
 import Btn from '../components/Btn';
 
-const SpecificResultScreen = ({ route, navigation }) => {
+const SpecificResultScreen = ({ route, navigation, mlflag }) => {
   const [isLoading, setIsLoading] = useState(route.params.mlflag);
 
   return (
@@ -34,7 +34,6 @@ const SpecificResultScreen = ({ route, navigation }) => {
           }}
         >
           Specific Results
-          {route.params.pred}
         </Text>
       </View>
       <Image

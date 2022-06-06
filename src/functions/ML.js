@@ -1,8 +1,11 @@
 import * as tf from '@tensorflow/tfjs';
 import { setWasmPath } from '@tensorflow/tfjs-backend-wasm';
 import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
+<<<<<<< HEAD
 import * as FileSystem from 'expo-file-system';
 //import wasmPATH from '../../node_modules/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm';
+=======
+>>>>>>> parent of 5ed5393 (commit)
 
 const loadModel = async () => {
   const modelJSON = require('../assets/models/model.json');
@@ -27,11 +30,11 @@ const transformImageToTensor = async (uri) => {
   let imgTensor = decodeJpeg(raw);
   const scalar = tf.scalar(255);
   //resize the image
-  imgTensor = tf.image.resizeNearestNeighbor(imgTensor, [300, 300]);
+  //imgTensor = tf.image.resizeNearestNeighbor(imgTensor, [300, 300]);
   //normalize; if a normalization layer is in the model, this step can be skipped
   const tensorScaled = imgTensor.div(scalar);
   //final shape of the rensor
-  const img = tf.reshape(tensorScaled, [-1, 50, 50, 1]);
+  const img = tf.reshape(tensorScaled, [1, 300, 300, 3]);
   return img;
 };
 
