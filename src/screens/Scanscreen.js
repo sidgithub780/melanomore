@@ -6,16 +6,22 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-
 import { Ionicons } from '@expo/vector-icons';
+import * as Progress from 'react-native-progress';
+
 import { OpenImages } from '../functions/OpenImages';
 
 import Screen from '../components/Screen';
 
 import { setAsyncStorage } from '../functions/AsyncFunctions';
 
+import { process } from '../functions/tf';
+
 const Scanscreen = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const [diagnosis, setDiagnosis] = useState(0);
+  const [processing, setProcessing] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [progressBar, setProgressBar] = useState(false);
 
   return (
     <Screen>
@@ -40,15 +46,28 @@ const Scanscreen = ({ navigation }) => {
       </Text>
       <View style={styles.centerThis}>
         <TouchableOpacity
+          disabled={disabled}
           style={[styles.bigButton, styles.shadowProp]}
           onPress={async () => {
-            const imageURI = await OpenImages();
+            const image = await OpenImages();
 
-            if (imageURI !== null) {
+            console.log(image);
+
+            if (image !== null) {
               try {
-                const theValue = await setAsyncStorage(imageURI);
+                setDisabled(true);
+                setProgressBar(true);
+                imageURI = image.uri;
+                const res = await process(image, setDiagnosis, setProcessing);
+                const jsonValue = await JSON.stringify({ res, imageURI });
+                console.log(res);
+                console.log(jsonValue);
+                await setAsyncStorage(jsonValue);
+                setDisabled(false);
+                setProgressBar(false);
                 navigation.navigate('Specific Results', {
-                  imageURI: theValue,
+                  imageURI: imageURI,
+                  res: res,
                   mlflag: true,
                 });
               } catch (e) {
@@ -60,6 +79,16 @@ const Scanscreen = ({ navigation }) => {
           <Ionicons name='camera' size={165} style={{ alignSelf: 'center' }} />
           <Text style={styles.buttonText}>Detect</Text>
         </TouchableOpacity>
+
+        {progressBar ? (
+          <Progress.Bar
+            progress={diagnosis}
+            width={200}
+            style={styles.progressBar}
+          />
+        ) : null}
+
+        <Text>{processing}</Text>
       </View>
     </Screen>
   );
@@ -90,5 +119,8 @@ const styles = StyleSheet.create({
     height: '40%',
     borderRadius: 15,
     alignSelf: 'center',
+  },
+  progressBar: {
+    marginTop: 25,
   },
 });

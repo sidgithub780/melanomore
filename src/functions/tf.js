@@ -2,29 +2,50 @@ import { Dimensions } from 'react-native';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as tf from '@tensorflow/tfjs';
 import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
-import { Base64Binary } from '../utils/b64';
-import { image } from '@tensorflow/tfjs';
-import * as FileSystem from 'expo-file-system';
+import { Base64Binary } from '../utils/b64.js';
 
-const results = ['Not Melanoma', 'Melanoma'];
+const BITMAP_DIMENSION = 50;
+const TENSORFLOW_CHANNEL = 3;
+const { height: DEVICE_HEIGHT, width: DEVICE_WIDTH } = Dimensions.get('window');
+const results = ['Not Melanoma (BENIGN)', 'Melanoma (MALIGNANT)'];
 
-const transformImageToTensor = async (uri) => {
-  //.ts: const transformImageToTensor = async (uri:string):Promise<tf.Tensor>=>{
-  //read the image as base64
-  const img64 = await FileSystem.readAsStringAsync(uri, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-  const imgBuffer = tf.util.encodeString(img64, 'base64').buffer;
-  const raw = new Uint8Array(imgBuffer);
-  let imgTensor = decodeJpeg(raw);
-  const scalar = tf.scalar(255);
-  //resize the image
-  imgTensor = tf.image.resizeNearestNeighbor(imgTensor, [300, 300]);
-  //normalize; if a normalization layer is in the model, this step can be skipped
-  const tensorScaled = imgTensor.div(scalar);
-  //final shape of the rensor
-  const img = tf.reshape(tensorScaled, [-1, 50, 50, 1]);
-  return img;
+const crop = async (imageData, maskDimension) => {
+  const { uri, width, height } = imageData;
+  const cropWidth = maskDimension * (width / DEVICE_WIDTH);
+  const cropHeight = maskDimension * (height / DEVICE_HEIGHT);
+  const actions = [
+    {
+      crop: {
+        originX: width / 2 - cropWidth / 2,
+        originY: height / 2 - cropHeight / 2,
+        width: cropWidth,
+        height: cropHeight,
+      },
+    },
+    {
+      resize: {
+        width: BITMAP_DIMENSION,
+        height: BITMAP_DIMENSION,
+      },
+    },
+  ];
+  const saveOptions = {
+    compress: 1,
+    format: ImageManipulator.SaveFormat.JPEG,
+    base64: true,
+  };
+  return await ImageManipulator.manipulateAsync(uri, actions, saveOptions);
+};
+
+const convertToTensor = async (base64) => {
+  const uIntArray = Base64Binary.decode(base64);
+  const decodedImage = decodeJpeg(uIntArray, 3);
+  return decodedImage.reshape([
+    1,
+    BITMAP_DIMENSION,
+    BITMAP_DIMENSION,
+    TENSORFLOW_CHANNEL,
+  ]);
 };
 
 const predict = async (model, tensor) => {
@@ -32,27 +53,55 @@ const predict = async (model, tensor) => {
   return output.dataSync();
 };
 
-export const process = async (image, setDiagnosis, setLoading) => {
-  console.log('inside process btw');
+export const process = async (image, setDiagnosis, setProcessing) => {
+  setProcessing('Cropping image...');
+
+  const croppedData = await crop(image, 300);
+
+  setDiagnosis(0.1);
+
+  setProcessing('Loading model...');
+
+  console.log('image is cropped');
+
+  await tf.setBackend('cpu');
+
   await tf.ready();
-  const modelJSON = require('../assets/models/model.json');
-  const modelWeights = require('../assets/models/group1-shard.bin');
+  const modelJSON = require('../assets/newest_models/model.json');
+  const modelWeights = require('../assets/newest_models/group1-shard1of1.bin');
   const model = await tf.loadLayersModel(
     bundleResourceIO(modelJSON, modelWeights)
   );
+
+  setDiagnosis(0.4);
+
   console.log('model loaded');
 
-  const tensor = await transformImageToTensor(image);
+  setProcessing('Converting to tensor...');
+
+  const tensor = await convertToTensor(croppedData.base64);
+
+  setDiagnosis(0.5);
 
   console.log('converted to tensor');
+
+  setProcessing('Predicting...');
+
   const prediction = await predict(model, tensor);
 
-  console.log('converted to tensor and prediction happened');
+  console.log('predicted');
+
   const highestPrediction = prediction.indexOf(
     Math.max.apply(null, prediction)
   );
 
-  console.log(highestPrediction);
-  setDiagnosis(results[highestPrediction]);
-  setLoading(false);
+  setProcessing('Done!');
+  setDiagnosis(0);
+
+  console.log(results[prediction[0]]);
+
+  //setDiagnosis(results[prediction[0]]);
+  setProcessing(false);
+
+  return results[prediction[0]];
 };

@@ -13,10 +13,8 @@ const setAsyncStorage = async (value) => {
 
 const getAsyncStorage = async (storageKey) => {
   try {
-    await AsyncStorage.getItem(storageKey);
-    if (value !== null) {
-      return value;
-    }
+    const jsonValue = await AsyncStorage.getItem(storageKey);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     console.log(e);
   }
@@ -45,7 +43,7 @@ const getAllKeyValuePairsAsyncStorage = async () => {
     console.log(e);
   }
 
-  return values;
+  return values.map((req) => JSON.parse(req[1]));
 };
 
 const clearAsyncStorage = async () => {

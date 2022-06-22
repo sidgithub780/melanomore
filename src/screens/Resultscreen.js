@@ -19,7 +19,8 @@ import uuid from 'react-native-uuid';
 const handleSubmit = async () => {
   let onlyImages = [];
   let result = await getAllKeyValuePairsAsyncStorage();
-  result.forEach((element) => onlyImages.push(element[1]));
+  console.log(result);
+  result.forEach((element) => onlyImages.push(element));
   if (onlyImages.length === 0) {
     alert('No scans currently stored.');
   }
@@ -68,13 +69,14 @@ const Resultscreen = ({ navigation }) => {
       ) : (
         <ScrollView style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
           {scans !== null ? (
-            scans.map((imageURI) => (
+            scans.map((element) => (
               <PastResult
-                diagnosis='melanoma'
-                imageURI={imageURI}
+                diagnosis={element['res']}
+                imageURI={element['imageURI']}
                 onPress={() => {
                   navigation.navigate('Specific Results', {
-                    imageURI: imageURI,
+                    imageURI: element['imageURI'],
+                    res: element['res'],
                     mlflag: false,
                   });
                 }}

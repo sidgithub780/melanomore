@@ -8,17 +8,6 @@ import { process } from '../functions/tf';
 import { diag } from '@tensorflow/tfjs';
 
 const SpecificResultScreen = ({ route, navigation }) => {
-  const [loading, setLoading] = useState(route.params.mlflag);
-  const [diagnosis, setDiagnosis] = useState(null);
-
-  useEffect(() => {
-    if (route.params.mlflag) {
-      console.log('useeffect is running');
-      console.log(typeof route.params.imageURI);
-      process(route.params.imageURI, setDiagnosis, setLoading);
-    }
-  }, []);
-
   return (
     <Screen>
       <View style={styles.header}>
@@ -49,15 +38,8 @@ const SpecificResultScreen = ({ route, navigation }) => {
         source={{ uri: route.params.imageURI }}
         style={{ width: 50, height: 50 }}
       />
-      {loading ? <ActivityIndicator size='large' /> : <Text>{diagnosis}</Text>}
 
-      <Btn
-        text='wow'
-        desc='wow'
-        onPress={() => {
-          alert('wow');
-        }}
-      />
+      <Btn text={route.params.res} />
     </Screen>
   );
 };

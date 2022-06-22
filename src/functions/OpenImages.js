@@ -12,7 +12,7 @@ const OpenImages = async () => {
   if (result.cancelled) {
     return null;
   } else {
-    return result.uri;
+    return result;
   }
 };
 
