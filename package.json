@@ -17,6 +17,7 @@
     "@tensorflow/tfjs": "^3.18.0",
     "@tensorflow/tfjs-backend-wasm": "^3.18.0",
     "@tensorflow/tfjs-react-native": "^0.8.0",
+    "axios": "^0.27.2",
     "expo": "~44.0.0",
     "expo-camera": "^12.2.0",
     "expo-constants": "^13.0.2",

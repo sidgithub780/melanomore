@@ -11,10 +11,10 @@ const Btn = ({ icon, text, desc, onPress }) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {icon}
       <View style={{ marginLeft: 15 }}>
-        <Text style={{ fontSize: 18 }}>{text}</Text>
+        <Text style={{ fontSize: 15 }}>{text}</Text>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 11,
             color: '#999999',
           }}
         >

@@ -89,6 +89,10 @@ const Scanscreen = ({ navigation }) => {
         ) : null}
 
         <Text>{processing}</Text>
+        <Text style={{ fontFamily: 'CourierPrime-Regular' }}>
+          While our machine learning model is accurate, it is in no means a
+          substitution for professional medical help.
+        </Text>
       </View>
     </Screen>
   );

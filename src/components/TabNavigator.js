@@ -6,6 +6,7 @@ import Scanscreen from '../screens/Scanscreen';
 import Titlescreen from '../screens/Titlescreen';
 import Aboutscreen from '../screens/Aboutscreen';
 import SpecificResultScreen from '../screens/SpecificResultScreen';
+import Doctorscreen from '../screens/Doctorscreen';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -66,6 +67,8 @@ const TabNavigator = () => {
               : 'checkmark-circle-outline';
           } else if (rn === 'About') {
             iconName = focused ? 'people' : 'people-outline';
+          } else if (rn === 'Doctor') {
+            iconName = focused ? 'medical' : 'medical-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -81,6 +84,9 @@ const TabNavigator = () => {
       <Tab.Screen name='Scan' component={Scan} />
 
       <Tab.Screen name='Result' component={Result} />
+
+      <Tab.Screen name='Doctor' component={Doctorscreen} />
+
       <Tab.Screen name='About' component={Aboutscreen} />
     </Tab.Navigator>
   );
