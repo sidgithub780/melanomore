@@ -22,31 +22,7 @@ const Aboutscreen = () => {
           },
         }}
       >
-        About Us
-      </Text>
-      <Text
-        style={{
-          fontFamily: 'CourierPrime-Regular',
-          fontSize: 16,
-          marginVertical: 15,
-        }}
-      >
-        Built by:
-      </Text>
-      <Text
-        style={{
-          fontFamily: 'CourierPrime-Regular',
-          fontSize: 16,
-          marginVertical: 15,
-        }}
-      >
-        - Siddhanth is a passionate app developer who enjoys helping his
-        community.
-      </Text>
-
-      <Text style={{ fontFamily: 'CourierPrime-Regular', fontSize: 16 }}>
-        - Shivane is a curious machine learning developer who is eager to create
-        more and more community oriented projects.
+        About
       </Text>
 
       <Btn

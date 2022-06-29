@@ -12,7 +12,6 @@ import Screen from '../components/Screen';
 import Btn from '../components/Btn';
 import { Ionicons } from '@expo/vector-icons';
 
-import Yelp from '../api/Yelp';
 import { getInfo } from '../functions/YelpFunction';
 
 import uuid from 'react-native-uuid';
@@ -50,15 +49,19 @@ const Doctorscreen = () => {
       <Text>{location}</Text>
       <Btn
         icon={<Ionicons name='medical-outline' size={40} />}
-        text='fetch'
-        desc='oo.'
+        text='Submit search'
+        desc='Search for doctors in a location'
         onPress={async () => {
-          setLoading(true);
-          const response = await getInfo(location);
+          if (location != '') {
+            setLoading(true);
+            const response = await getInfo(location);
 
-          setInformation(response.data.businesses);
+            setInformation(response.data.businesses);
 
-          setLoading(false);
+            setLoading(false);
+          } else {
+            alert('Type in location box');
+          }
         }}
       />
 
