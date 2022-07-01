@@ -7,6 +7,7 @@ import Titlescreen from '../screens/Titlescreen';
 import Aboutscreen from '../screens/Aboutscreen';
 import SpecificResultScreen from '../screens/SpecificResultScreen';
 import Doctorscreen from '../screens/Doctorscreen';
+import Procedurescreen from '../screens/Procedurescreen';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -41,6 +42,23 @@ const Result = () => {
       <Stack.Screen
         name='Specific Results'
         component={SpecificResultScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const About = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='About Screen'
+        component={Aboutscreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name='Procedure'
+        component={Procedurescreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -87,7 +105,7 @@ const TabNavigator = () => {
 
       <Tab.Screen name='Doctor' component={Doctorscreen} />
 
-      <Tab.Screen name='About' component={Aboutscreen} />
+      <Tab.Screen name='About' component={About} />
     </Tab.Navigator>
   );
 };
